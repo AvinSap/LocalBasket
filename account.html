@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Local Basket</title>
+</head>
+
+<body class="bg-[]">
+    <!-- NAV BAR -->
+    <nav class="mb-5 border rounded-lg border-white shadow-lg">
+      <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Logo -->
+        <img class="h-32 w-32" src="img/logo-transparent.png" alt="LocalBasket-Logo">
+  
+        <!-- Nav Links -->
+        <ul class="flex flex-col md:flex-row items-center gap-7 ">
+          <li class="font-semibold hover:text-blue-500 "><a href="index.html">Home</a></li>
+          <li class="font-semibold hover:text-blue-500"><a href="orders.html">Orders</a></li>
+          <li class="font-semibold hover:text-blue-500"><a href="cart.html">My Cart</a></li>
+          <li class="font-semibold hover:text-blue-500"><a href="account.html">Account</a></li>
+        </ul>
+  
+        <!-- Right Side Nav -->
+        <div class="nav-contents flex flex-col md:flex-row items-center gap-4">
+            <!-- Search Bar -->
+            <form class="relative">
+            <input type="search" id="default-search" class="w-full md:w-max p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"/>
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" />
+                </svg>
+            </div>
+            <button type="submit" class="absolute right-2.5 bottom-1.5 bg-transparent hover:bg-gray-300 text-black text-sm px-3 py-1 rounded-lg">Search</button>
+          </form>
+  
+          <!-- Auth Buttons -->
+          <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="admin.html">Setup Store</a></button>
+          <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="index.html">LogOut</a></button>
+        </div>
+        </div>
+    </nav>
+    <div class="hover:justify-center bg-[#C6C5B9] border rounded-2xl items-center flex flex-col md:flex-row p-10 w-full shadow-lg shadow-gray-300">
+        <img class="w-1/2" src="img/welcome.jpg" alt="">
+        <div class=" p-5 mt-5 justify-center text-center w-full items-center">
+        <h1 class="text-black font-bold text-4xl text-black ">Welcome to Local Basket</h1>
+        <p class="justify mb-5 text-center text-black">We deliver to your DoorSteps!!</p>
+        <button class="bg-transparent mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full "><a href="about.html">About Us</a></button>
+        <button class="bg-transparent mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="listings.html">View Listings</a></button>
+    </div>
+</div>
+
+<!-- CART -->
+<h1 class="p-3 sm:w-max mt-10 mb-10 text-black font-bold bg-gray-200 w-max border-black rounded-2xl">YOUR CART</h1>
+
+    <!-- CARD -->
+    <div class=" flex flex-row border shadow-lg rounded-2xl w-max ">
+       <h1 class="p-5"><a class="border shadow-lg rounded-2xl bg-gray-300 p-2" href="cart.html">Continue Shopping</a></h1>
+        <div>
+            <img class="h-40" src="img/jordan.jpg" alt="Jordan Dior">
+            <div>
+                <span class="m-3 font-bold">Dior X Jordan </span>
+            </div>
+        </div>
+        <div class="ml-5">
+            <img class="h-40" src="img/ronaldo.jpg" alt="RealMadrid-Jersey">
+            <div>
+                <span class="m-3 font-bold">Cr7 Jersey </span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
