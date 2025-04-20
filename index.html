@@ -14,7 +14,7 @@
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         
             <!-- Logo -->
-            <img class="h-32 w-32" src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
+            <img class="h-32 w-32 hover:shadow-md " src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
   
             <!-- Nav Links -->
             <ul class="flex flex-col md:flex-row items-center gap-7 ">
@@ -26,7 +26,7 @@
             <div class="nav-contents flex flex-col md:flex-row items-center gap-4">
                 <!-- Search Bar -->
                 <form class="relative">
-                <input type="search" id="default-search" class="w-full md:w-max p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"/>
+                <input type="search" id="default-search" class="w-full md:w-auto sm:w-max p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"/>
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 20 20" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" />
@@ -36,13 +36,13 @@
                 </form>
   
                 <!-- Auth Buttons -->
-                <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/pages/login.html">Login</a></button>
-                <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/pages/admin.html">Your Shop</a></button>
+                <button class="bg-transparent w-max md:w-max sm:w-full mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/pages/login.html">Login</a></button>
+                <button class="bg-transparent w-max md:hidden sm:w-full mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/pages/admin.html">Your Shop</a></button>
                 </div>
             </div>
         </nav>
-    <div class="jumbotron border rounded-lg  hover: bg-[#C6C5B9] justify-center items-center flex flex-col md:flex-row p-10 w-full">
-        <img class="w-1/2" src="/assets/img/localBusiness.jpeg" alt="">
+    <div class="jumbotron border rounded-lg bg-[#C6C5B9] shadow-md hover:shadow-lg justify-center items-center flex flex-col md:flex-row p-10 w-full">
+        <img class="w-1/2 opacity-90 hover:opacity-100" src="/assets/img/localBusiness.jpeg" alt="">
         <div class="text-container justify-center text-center w-full items-center">
             <h1 class="text-black font-bold text-4xl">Sign-Up to Your Local Basket Now!</h1>
             <p class="justify mb-5 text-center">For exclusive deals and to connect with your own local and convenient market.</p>
@@ -56,19 +56,19 @@
     <section class="signup mt-10 bg-gray-150 w-full flex items-center flex-row justify-center">
         <div class="border-gray-300 ">
              <!-- SignUp Container -->
-            <div class="bg-gray-50 flex rounded-2xl shadow-lg max-w-3xl p-5">
+            <div class="bg-gray-50 flex rounded-2xl shadow-md hover:shadow-lg max-w-3xl p-5  ">
                 <!-- form -->
                <div class="px-16">
                     <h2 class="font-bold text-2xl text-gray-500">Sign-Up</h2>
                     <form action=""class="flex flex-col gap-4">
-                        <input class="p-2 mt-8 border rounded-2xl" type="text"
+                        <input class="p-2 mt-8 border rounded-2xl hover:placeholder:text-blue-200" type="text"
                         name="email"
                         placeholder="Email">
-                        <input class="p-2 rounded-2xl "
+                        <input class="p-2 rounded-2xl hover:placeholder:text-blue-200 "
                         type="password"
                         name="password"
                         placeholder="Password">
-                        <button class="p-2 bg-[#626F47] text-white border rounded-2xl"><a href="/pages/signup.html">SignUp</a></button>
+                        <button class="p-2 bg-[#626F47] text-white border rounded-2xl shadow-md hover:focus:bg-blue-200 "><a href="/pages/login.html">SignUp</a></button>
                     </form>
                </div> 
             </div>
