@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - Local Basket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+        }
+        .file-upload input[type="file"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            cursor: inherit;
+            display: block;
+        }
+        .preview-image {
+            transition: all 0.3s ease;
+        }
+        .preview-image:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- NAV BAR (Same as your account.html) -->
+    <nav class="mb-5 border rounded-lg border-white shadow-lg">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <!-- Logo -->
+            <img class="h-32 w-32" src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
+            
+            <!-- Nav Links -->
+            <ul class="flex flex-col md:flex-row items-center gap-7">
+                <li class="font-semibold hover:text-blue-500"><a href="/index.html">Home</a></li>
+                <li class="font-semibold hover:text-blue-500"><a href="/pages/shop.html">My Shop</a></li>
+                <li class="font-semibold hover:text-blue-500"><a href="/pages/orders.html">Orders</a></li>
+                <li class="font-semibold hover:text-blue-500"><a href="/pages/account.html">Account</a></li>
+            </ul>
+            
+            <!-- Right Side Nav -->
+            <div class="nav-contents flex flex-col md:flex-row items-center gap-4">
+                <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/index.html">LogOut</a></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Dashboard Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Seller Dashboard</h1>
+                <p class="text-gray-600">Manage your products and track your sales</p>
+            </div>
+            <button id="newProductBtn" class="mt-4 md:mt-0 bg-[#626F47] text-white py-2 px-6 rounded-full hover:bg-[#535f3a] transition">
+                + Add New Product
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Total Earnings</p>
+                        <h2 class="text-2xl font-bold">$<span id="totalEarnings">0.00</span></h2>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2"><span id="earningsChange" class="text-green-600">+0%</span> from last month</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Total Products</p>
+                        <h2 class="text-2xl font-bold"><span id="totalProducts">0</span></h2>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2"><span id="productsChange" class="text-green-600">+0</span> products added</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Orders This Month</p>
+                        <h2 class="text-2xl font-bold"><span id="totalOrders">0</span></h2>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2"><span id="ordersChange" class="text-green-600">+0%</span> from last month</p>
+            </div>
+        </div>
+
+        <!-- Sales Chart -->
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Sales Analytics</h2>
+                <select id="timePeriod" class="border rounded px-3 py-1 text-sm">
+                    <option value="week">Last 7 Days</option>
+                    <option value="month" selected>This Month</option>
+                    <option value="year">This Year</option>
+                </select>
+            </div>
+            <canvas id="salesChart" height="300"></canvas>
+        </div>
+
+        <!-- Product Listing Form (Hidden by default) -->
+        <div id="productFormContainer" class="hidden bg-white p-6 rounded-lg shadow mb-8">
+            <h2 class="text-xl font-semibold mb-4">List New Product</h2>
+            <form id="productForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Product Name*</label>
+                        <input type="text" name="name" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#626F47] focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Price ($)*</label>
+                        <input type="number" step="0.01" name="price" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#626F47] focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 mb-2">Description*</label>
+                    <textarea name="description" rows="4" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#626F47] focus:border-transparent"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Category*</label>
+                        <select name="category" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#626F47] focus:border-transparent">
+                            <option value="">Select Category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Home & Garden">Home & Garden</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Stock Quantity*</label>
+                        <input type="number" name="stock" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#626F47] focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">SKU (Optional)</label>
+                        <input type="text" name="sku" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#626F47] focus:border-transparent">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 mb-2">Product Images*</label>
+                    <div class="file-upload w-full border-2 border-dashed rounded-lg p-6 text-center">
+                        <input type="file" id="productImages" name="images" multiple accept="image/*" required class="hidden">
+                        <div id="uploadArea" class="cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-600">Click to upload images</p>
+                            <p class="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                        </div>
+                        <div id="imagePreviews" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2 hidden"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="button" id="cancelForm" class="px-6 py-2 border rounded-lg text-gray-700 hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-[#626F47] text-white rounded-lg hover:bg-[#535f3a]">List Product</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+            <h2 class="text-xl font-semibold mb-4">Recent Orders</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Orders will be loaded here -->
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">Loading orders...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Your Products</h2>
+                <input type="text" id="productSearch" placeholder="Search products..." class="border rounded px-3 py-1 text-sm">
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sales</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Products will be loaded here -->
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">Loading products...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const newProductBtn = document.getElementById('newProductBtn');
+        const productFormContainer = document.getElementById('productFormContainer');
+        const cancelForm = document.getElementById('cancelForm');
+        const productForm = document.getElementById('productForm');
+        const productImages = document.getElementById('productImages');
+        const uploadArea = document.getElementById('uploadArea');
+        const imagePreviews = document.getElementById('imagePreviews');
+        
+        // Toggle Product Form
+        newProductBtn.addEventListener('click', () => {
+            productFormContainer.classList.toggle('hidden');
+            window.scrollTo({
+                top: productFormContainer.offsetTop - 20,
+                behavior: 'smooth'
+            });
+        });
+        
+        cancelForm.addEventListener('click', () => {
+            productFormContainer.classList.add('hidden');
+            productForm.reset();
+            imagePreviews.innerHTML = '';
+            imagePreviews.classList.add('hidden');
+            uploadArea.classList.remove('hidden');
+        });
+        
+        // Image Upload Preview
+        productImages.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                uploadArea.classList.add('hidden');
+                imagePreviews.classList.remove('hidden');
+                imagePreviews.innerHTML = '';
+                
+                Array.from(e.target.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'relative';
+                        previewDiv.innerHTML = `
+                            <img src="${event.target.result}" class="preview-image w-full h-32 object-cover rounded border">
+                            <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                                ×
+                            </button>
+                        `;
+                        previewDiv.querySelector('button').addEventListener('click', () => {
+                            previewDiv.remove();
+                            if (imagePreviews.children.length === 0) {
+                                uploadArea.classList.remove('hidden');
+                                imagePreviews.classList.add('hidden');
+                            }
+                        });
+                        imagePreviews.appendChild(previewDiv);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+        
+        // Form Submission
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('name', productForm.name.value);
+            formData.append('description', productForm.description.value);
+            formData.append('price', productForm.price.value);
+            formData.append('category', productForm.category.value);
+            formData.append('stock', productForm.stock.value);
+            formData.append('sku', productForm.sku.value);
+            
+            // Append all selected images
+            Array.from(productImages.files).forEach(file => {
+                formData.append('images', file);
+            });
+            
+            // Here you would send this to your backend
+            try {
+                // Simulate API call
+                console.log('Submitting product:', Object.fromEntries(formData));
+                
+                // Show success message
+                alert('Product listed successfully!');
+                
+                // Reset form
+                productForm.reset();
+                imagePreviews.innerHTML = '';
+                imagePreviews.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+                productFormContainer.classList.add('hidden');
+                
+                // Refresh product list
+                loadProducts();
+            } catch (error) {
+                console.error('Error submitting product:', error);
+                alert('Failed to list product. Please try again.');
+            }
+        });
+        
+        // Load Dashboard Data
+        function loadDashboardData() {
+            // Simulate loading data from API
+            setTimeout(() => {
+                // Update stats
+                document.getElementById('totalEarnings').textContent = '1,245.80';
+                document.getElementById('earningsChange').textContent = '+12.5%';
+                document.getElementById('totalProducts').textContent = '24';
+                document.getElementById('productsChange').textContent = '+3';
+                document.getElementById('totalOrders').textContent = '18';
+                document.getElementById('ordersChange').textContent = '+20%';
+                
+                // Initialize Sales Chart
+                initSalesChart();
+                
+                // Load orders
+                loadOrders();
+                
+                // Load products
+                loadProducts();
+            }, 1000);
+        }
+        
+        // Initialize Sales Chart
+        function initSalesChart() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Sales ($)',
+                        data: [650, 590, 800, 810, 560, 550, 1245],
+                        backgroundColor: 'rgba(98, 111, 71, 0.1)',
+                        borderColor: '#626F47',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Update chart when time period changes
+            document.getElementById('timePeriod').addEventListener('change', (e) => {
+                // In a real app, you would fetch new data based on the selected period
+                console.log('Time period changed to:', e.target.value);
+            });
+        }
+        
+        // Load Orders
+        function loadOrders() {
+            const ordersTableBody = document.getElementById('ordersTableBody');
+            
+            // Simulate API call
+            setTimeout(() => {
+                const orders = [
+                    {
+                        id: 'ORD-1001',
+                        customer: 'John Doe',
+                        date: '2023-06-15',
+                        status: 'Shipped',
+                        total: 125.99
+                    },
+                    {
+                        id: 'ORD-1002',
+                        customer: 'Jane Smith',
+                        date: '2023-06-14',
+                        status: 'Processing',
+                        total: 89.50
+                    },
+                    {
+                        id: 'ORD-1003',
+                        customer: 'Robert Johnson',
+                        date: '2023-06-12',
+                        status: 'Delivered',
+                        total: 245.75
+                    }
+                ];
+                
+                ordersTableBody.innerHTML = orders.map(order => `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.customer}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(order.date).toLocaleDateString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                ${order.status === 'Shipped' ? 'bg-green-100 text-green-800' : 
+                                  order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' : 
+                                  'bg-blue-100 text-blue-800'}">
+                                ${order.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${order.total.toFixed(2)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="#" class="text-[#626F47] hover:text-[#535f3a] mr-3">View</a>
+                            <a href="#" class="text-gray-600 hover:text-gray-900">Invoice</a>
+                        </td>
+                    </tr>
+                `).join('');
+            }, 800);
+        }
+        
+        // Load Products
+        function loadProducts() {
+            const productsTableBody = document.getElementById('productsTableBody');
+            
+            // Simulate API call
+            setTimeout(() => {
+                const products = [
+                    {
+                        id: '1',
+                        name: 'Wireless Headphones',
+                        image: '/assets/img/jordan.jpg',
+                        price: 89.99,
+                        stock: 15,
+                        sales: 42,
+                        status: 'Active'
+                    },
+                    {
+                        id: '2',
+                        name: 'Smart Watch',
+                        image: '/assets/img/ronaldo.jpg',
+                        price: 199.99,
+                        stock: 8,
+                        sales: 23,
+                        status: 'Active'
+                    },
+                    {
+                        id: '3',
+                        name: 'Bluetooth Speaker',
+                        image: '/assets/img/welcome.jpg',
+                        price: 59.99,
+                        stock: 0,
+                        sales: 17,
+                        status: 'Out of Stock'
+                    }
+                ];
+                
+                productsTableBody.innerHTML = products.map(product => `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="${product.image}" alt="${product.name}">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">${product.name}</div>
+                                    <div class="text-sm text-gray-500">${product.category || 'Electronics'}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${product.price.toFixed(2)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.stock}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.sales}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                ${product.status === 'Active' ? 'bg-green-100 text-green-800' : 
+                                  product.status === 'Out of Stock' ? 'bg-red-100 text-red-800' : 
+                                  'bg-gray-100 text-gray-800'}">
+                                ${product.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="#" class="text-[#626F47] hover:text-[#535f3a] mr-3">Edit</a>
+                            <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                        </td>
+                    </tr>
+                `).join('');
+            }, 800);
+        }
+        
+        // Initialize the dashboard when page loads
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+// Fetch cart items
+async function loadCart() {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:5000/api/cart', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        const cart = await response.json();
+        renderCartItems(cart.items);
+        updateTotal(cart.total);
+    } catch (error) {
+        console.error('Error loading cart:', error);
+    }
+}
+
+function renderCartItems(items) {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = items.map(item => `
+        <div class="cart-item flex border-b py-4">
+            <img src="${item.product.images[0]}" class="w-20 h-20 object-cover">
+            <div class="ml-4">
+                <h3 class="font-bold">${item.product.name}</h3>
+                <p>$${item.product.price.toFixed(2)} x ${item.quantity}</p>
+                <button onclick="removeFromCart('${item.product._id}')" 
+                        class="text-red-500 mt-1">Remove</button>
+            </div>
+        </div>
+    `).join('');
+}

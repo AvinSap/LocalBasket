@@ -41,31 +41,92 @@
     </nav>
 
     <section class="bg-gray-150 w-full flex items-center flex-row justify-center">
-    <div class="border-gray-300 ">
+      <div class="border-gray-300">
          <!-- Login Container -->
         <div class="bg-gray-50 flex rounded-2xl shadow-lg max-w-3xl p-5">
-            <!-- form left section -->
+            <!-- Form Left Section -->
            <div class="sm:w-1/2 px-16">
                 <h2 class="font-bold text-2xl text-gray-500">Login</h2>
                 <p class="font-semibold text-sm mt-4 text-gray-500">Already have an Account?</p>
                 
-                <form action=""class= "flex flex-col gap-4">
-                    <input class="p-2 mt-8 border rounded-2xl" type="text"
-                    name="email"
-                    placeholder="Email">
-                    <input class="p-2 rounded-2xl "
-                    type="password"
-                    name="password"
-                    placeholder="Password">
-                    <button class="p-2 bg-[#626F47] text-white border rounded-2xl"><a href="/pages/account.html">Login</a></button>
+                <form id="loginForm" class="flex flex-col gap-4">
+                    <input class="p-2 mt-8 border rounded-2xl" 
+                           type="email" name="email" placeholder="Email" required>
+                    <input class="p-2 border rounded-2xl"
+                           type="password" name="password" placeholder="Password" required>
+                    <button type="submit" class="p-2 bg-[#626F47] text-white border rounded-2xl hover:bg-[#535f3a]">
+                        Login
+                    </button>
                 </form>
+
+                <!-- Add this divider and sign-up button -->
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-gray-50 text-gray-500">Or</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button onclick="window.location.href='/pages/signup.html'" 
+                                class="w-full bg-transparent font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                            Create New Account
+                        </button>
+                    </div>
+                </div>
            </div> 
-           <!-- image -->
+           <!-- Image -->
             <div class="w-1/2 ">
               <img class="sm:block hidden rounded-2xl" 
-              src="/assets/img/shoppinglogin.jpg" alt="">  
+                   src="/assets/img/shoppinglogin.jpg" alt="">  
             </div>
         </div>
-</section>
-  </body>
+      </div>
+    </section>
+
+    <!-- Login JavaScript -->
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const formData = {
+              email: e.target.email.value,
+              password: e.target.password.value
+          };
+
+          try {
+              const response = await fetch('http://localhost:5000/api/auth/login', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(formData)
+              });
+
+              const data = await response.json();
+              
+              if (response.ok) {
+                  // Store token and user data
+                  localStorage.setItem('token', data.token);
+                  localStorage.setItem('user', JSON.stringify(data.user));
+                  
+                  // Redirect based on user role
+                  if (data.user.role === 'admin') {
+                      window.location.href = '/pages/admin.html';
+                  } else {
+                      window.location.href = '/pages/account.html';
+                  }
+              } else {
+                  alert(data.message || 'Login failed');
+              }
+          } catch (error) {
+              console.error('Error:', error);
+              alert('An error occurred during login');
+          }
+      });
+    </script>
+</body>
 </html>
