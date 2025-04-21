@@ -10,14 +10,14 @@
 
 <body>
     <!-- NAV BAR -->
-    <nav class="mb-5 border rounded-lg border-white shadow-lg lg:w-full md:w-full sm:w-full">
+    <nav class="mb-5 border rounded-lg border-white shadow-sm hover:shadow-lg lg:w-full md:w-full sm:w-full">
       <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         
         <!-- Logo -->
         <img class="h-32 w-32" src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
   
         <!-- Nav Links -->
-        <ul class="flex md:flex-row lg:w-96 items-center gap-7 ">
+        <ul class="flex md:flex-row items-center gap-7 ">
           <li class="font-semibold hover:text-blue-500 "><a href="/index.html">Home</a></li>
           <li class="font-semibold hover:text-blue-500"><a href="/pages/orders.html">Orders</a></li>
           <li class="font-semibold hover:text-blue-500"><a href="/pages/cart.html">My Cart</a></li>
@@ -28,7 +28,7 @@
         <div class="nav-contents flex flex-col md:flex-row items-center gap-4">
             <!-- Search Bar -->
             <form class="relative">
-            <input type="search" id="default-search" class="w-full md:w-max p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"/>
+            <input type="search" id="default-search" class="w-full md:w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"/>
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 20 20" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" />
@@ -38,12 +38,14 @@
           </form>
   
           <!-- Auth Buttons -->
-          <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full lg:w-max md:w-max sm:w-max"><a href="/pages/admin.html">Setup Store</a></button>
-          <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full lg:w-max md:w-max sm:w-max"><a href="/index.html">LogOut</a></button>
+           <div>
+          <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full md:w-max sm:w-max"><a href="/pages/admin.html">Setup Store</a></button>
+          <button class="bg-transparent w-max mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full md:w-auto sm:w-max"><a href="/index.html">LogOut</a></button>
         </div>
+    </div>
         </div>
     </nav>
-    <div class="hover:justify-center bg-[#C6C5B9] border rounded-2xl items-center flex flex-col md:flex-row p-10 w-full shadow-lg shadow-gray-300">
+    <div class="hover:shadow-lg justify-center bg-[#C6C5B9] border rounded-2xl items-center flex flex-col md:flex-row p-10 w-full shadow-sm">
         <img class="w-1/2" src="/assets/img/welcome.jpg" alt="">
         <div class=" p-5 mt-5 justify-center text-center w-full items-center">
         <h1 class="text-black font-bold text-4xl text-black ">Welcome to Local Basket</h1>
@@ -57,7 +59,7 @@
 <h1 class="p-3 sm:w-max mt-10 mb-10 text-black font-bold bg-gray-200 w-max border-black rounded-2xl">YOUR CART</h1>
 
     <!-- CARD -->
-    <div class=" flex flex-row border shadow-lg rounded-2xl w-max ">
+    <div class=" shadow-md hover:shadow-lg flex flex-row border shadow-lg rounded-2xl w-full md:w-max sm:w-full lg:flex-row">
        <h1 class="p-5"><a class="border shadow-lg rounded-2xl bg-gray-300 p-2" href="/pages/cart.html">Continue Shopping</a></h1>
         <div>
             <img class="h-40" src="/assets/img/jordan.jpg" alt="Jordan Dior">
