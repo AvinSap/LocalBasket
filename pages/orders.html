@@ -1,0 +1,30 @@
+// Load user's orders
+async function loadOrders() {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:5000/api/orders/my-orders', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        const orders = await response.json();
+        renderOrders(orders);
+    } catch (error) {
+        console.error('Error loading orders:', error);
+    }
+}
+
+function renderOrders(orders) {
+    const container = document.getElementById('orders-container');
+    container.innerHTML = orders.map(order => `
+        <div class="order-card border rounded-lg p-4 mb-4 shadow">
+            <div class="flex justify-between">
+                <p class="font-bold">Order #${order._id.slice(-6)}</p>
+                <p class="text-sm">${new Date(order.createdAt).toLocaleDateString()}</p>
+            </div>
+            <p>Status: <span class="font-semibold">${order.status}</span></p>
+            <p>Total: <span class="font-bold">$${order.total.toFixed(2)}</span></p>
+            <button onclick="viewOrderDetails('${order._id}')" 
+                    class="mt-2 text-blue-500 hover:underline">View Details</button>
+        </div>
+    `).join('');
+}
