@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products - Local Basket</title>
+    <title>Listings</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8">Available Products</h1>
+        <h1 class="text-3xl font-bold mb-8 text-4xl">Available Products</h1>
         
         <!-- Search and Filters -->
+         <nav class="p-3 bg-white font-bold"><a href="/pages/account.html">Home</a></nav>
         <div class="bg-white p-4 rounded-lg shadow-md mb-6">
             <div class="flex flex-col md:flex-row gap-4">
-                <input type="text" placeholder="Search products..." id="searchInput" 
+                <input type="text" placeholder="Search for products..." id="searchInput" 
                        class="flex-grow p-2 border rounded">
                 <select id="categoryFilter" class="p-2 border rounded">
                     <option value="">All Categories</option>
@@ -34,6 +35,42 @@
             <!-- Products will be loaded here -->
         </div>
     </div>
+<!-- CART -->
+ 
+<h1 class="p-3 m-20 text-center sm:w-max mt-10 mb-10 text-black font-bold bg-gray-200 border-black rounded-2xl">Products</h1>
+
+    <!-- CARD -->
+    <div class=" m-24 h-96 bg-white flex justify-between flex-row shadow-lg rounded-2xl">
+        <div class=" flex flex-col p-10  font-bold">
+            <img class="h-8 w-8" src="/assets/img/store.png" alt="Store-logo">
+            <h1 class="mb-10 font-bold">Avin's Store</h1>
+            <span class="font-semibold text-3 bg-green-200 w-max shadow-lg border rounded-2xl mb-10">In-Stock</span>
+            <span>DIOR X JORDAN</span>
+            <span class="text-3xl">$1,000</span>
+            </div>
+            <!-- Image -->
+            <div>
+            <img class="h-96 w-96 p-2 shadow-md rounded-2xl" src="/assets/img/jordan.jpg" alt="Jordan Dior">
+          
+        </div>
+    </div>
+    
+    <!-- CARD-2 -->
+    
+    <div class="h-96 flex justify-between bg-white m-24 rounded-2xl shadow-lg">
+        <div class=" flex flex-col p-10 font-bold">
+            <img class="h-8 w-8" src="/assets/img/store.png" alt="Store-logo">
+            <h1 class="mb-10">Siuuu7</h1>
+            <span class=" font-semibold text-3 bg-red-200 w-max shadow-lg border rounded-2xl mb-10">Out-Of-Stock</span>
+            <span>CR7 Jersey</span>
+            <span class="text-3xl">$30.99</span>
+        </div>
+            <!-- Image -->
+            <div class="ml-5">
+                <img class="h-96 w-96 p-2 shadow-md rounded-2xl opacity-50 hover:opacity-100" src="/assets/img/ronaldo.jpg" alt="RealMadrid-Jersey">
+            </div>
+    </div>
+
 
     <script>
         // Load all products

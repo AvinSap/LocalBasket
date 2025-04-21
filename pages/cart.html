@@ -1,4 +1,71 @@
-// Fetch cart items
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <title>Local Basket</title>
+</head>
+
+<body>
+    <!-- NAV BAR -->
+<nav class="mb-5 border rounded-lg border-white shadow-lg sm:w-full md:w-full">
+        
+      <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Logo -->
+        <img class="h-32 w-32" src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
+  
+        <!-- Nav Links -->
+        <ul class="flex flex-col md:flex-row items-center gap-7 ">
+          <li class="font-semibold hover:text-blue-500 "><a href="/index.html">Home</a></li>
+          <li class="font-semibold hover:text-blue-500"><a href="/pages/orders.html">Orders</a></li>
+          <li class="font-semibold hover:text-blue-500"><a href="/pages/cart.html">My Cart</a></li>
+          <li class="font-semibold hover:text-blue-500"><a href="/pages/account.html">Account</a></li>
+        </ul>
+  
+        <!-- Right Side Nav -->
+        <div class="nav-contents flex flex-col md:flex-row items-center gap-4">
+            <!-- Search Bar -->
+            <form class="relative">
+            <input type="search" id="default-search" class="w-full md:w-max p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"/>
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" />
+                </svg>
+            </div>
+            <button type="submit" class="absolute right-2.5 bottom-1.5 bg-transparent hover:bg-gray-300 text-black text-sm px-3 py-1 rounded-lg">Search</button>
+          </form>
+  
+          <!-- Auth Buttons -->
+            <div class="flex w-max gap-2">
+                <button class="w-max mb-3 py-2 px-4 bg-transparent font-semibold hover:text-black border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                <a href="/pages/shop.html">My Seller Dashboard</a>
+                </button>
+                <button class="bg-transparent w-max sm:w-auto mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/index.html">LogOut</a></button>
+            </div>
+        </div>
+    </div>
+</nav>
+        <div class="h-96 w-[50rem] mt-24 mx-auto flex bg-white rounded-2xl shadow-lg  ">
+        <div>
+            <img class="m-3 h-10 w-10" src="/assets/img/cart.png" alt="Basket-logo">
+            <h1 class="font-semibold mb-1 p-10">HAVE YOU MADE YOUR DECISION YET?</h1>
+            <span class="text-3xl font-bold p-10">Total:$1030.99</span>
+            <button class="w-max p-5 m-5 border rounded-2xl bg-gray-200 shadow-lg">Proceed to Checkout</button>
+          <div class="ml-8">
+            <span class="bg-green-200 rounded-2xl"><img class="h-4" src="/assets/img/truck.png" alt="">Delivers  Tommorow</span>
+          </div>
+        </div>
+        <div class="flex sm:w-full">
+            <img class="h-52" src="/assets/img/jordan.jpg" alt="Shoes">
+            <img class="h-52" src="/assets/img/ronaldo.jpg" alt="Jersey">
+        </div>
+    </div>
+</body>
+</html>
+<!-- // Fetch cart items
 async function loadCart() {
     try {
         const token = localStorage.getItem('token');
@@ -27,4 +94,4 @@ function renderCartItems(items) {
             </div>
         </div>
     `).join('');
-}
+} -->

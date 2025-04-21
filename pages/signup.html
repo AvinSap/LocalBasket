@@ -43,14 +43,14 @@
     <section class="bg-gray-150 w-full flex items-center flex-row justify-center">
       <div class="border-gray-300">
          <!-- Signup Container -->
-        <div class="bg-gray-50 flex rounded-2xl shadow-lg max-w-3xl p-5">
+        <div class="bg-gray-50 flex rounded-2xl shadow-lg max-w-3xl p-5 ">
             <!-- Form Left Section -->
            <div class="sm:w-1/2 px-16">
                 <h2 class="font-bold text-2xl text-gray-500">Create Account</h2>
-                <p class="font-semibold text-sm mt-4 text-gray-500">Join Local Basket today</p>
+                <p class="font-semibold text-sm mt-4 text-gray-500 w-max">Join Local Basket today</p>
                 
                 <!-- Registration Form -->
-                <form id="registerForm" class="flex flex-col gap-4 mt-6">
+                <form id="registerForm" class="flex flex-col gap-4 mt-6 w-max">
                     <input class="p-2 border rounded-2xl" 
                            type="text" name="name" placeholder="Full Name" required>
                     <input class="p-2 border rounded-2xl" 
@@ -68,14 +68,14 @@
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-gray-300"></div>
                         </div>
-                        <div class="relative flex justify-center text-sm">
-                            <span class="px-2 bg-gray-50 text-gray-500">Already have an account?</span>
+                        <div class="relative flex justify-center text-sm w-max">
+                            <span class="px-2 bg-gray-50 text-gray-500 w-max">Already have an account?</span>
                         </div>
                     </div>
 
                     <div class="mt-6">
                         <button onclick="window.location.href='/pages/login.html'" 
-                                class="w-full bg-transparent font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                                class="w-max bg-transparent font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
                             Login Instead
                         </button>
                     </div>
