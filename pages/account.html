@@ -11,20 +11,11 @@
 <body>
     <!-- NAV BAR -->
     <nav class="mb-5 border rounded-lg border-white shadow-lg sm:w-full md:w-full">
-        
       <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        
         <!-- Logo -->
         <img class="h-32 w-32" src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
-  
         <!-- Nav Links -->
-        <ul class="flex flex-col md:flex-row items-center gap-7 ">
-          <li class="font-semibold hover:text-blue-500 "><a href="/index.html">Home</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/orders.html">Orders</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/cart.html">My Cart</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/account.html">Account</a></li>
-        </ul>
-  
+        
         <!-- Right Side Nav -->
         <div class="nav-contents flex flex-col md:flex-row items-center gap-4">
             <!-- Search Bar -->
@@ -37,13 +28,17 @@
             </div>
             <button type="submit" class="absolute right-2.5 bottom-1.5 bg-transparent hover:bg-gray-300 text-black text-sm px-3 py-1 rounded-lg">Search</button>
           </form>
-  
           <!-- Auth Buttons -->
           <div class="flex w-max gap-2">
                 <button class="w-max mb-3 py-2 px-4 bg-transparent font-semibold hover:text-black border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
-                <a href="/pages/shop.html">My Seller Dashboard</a>
+                    <a href="/pages/shop.html">My Seller Dashboard</a>
                 </button>
-                <button class="bg-transparent w-max sm:w-auto mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/index.html">LogOut</a></button>
+                <button class="w-max mb-3 py-2 px-4 bg-transparent font-semibold hover:text-black border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                    <a href="/pages/cart.html">My Cart</a>
+                </button>
+                <button id="logoutBtn" class="bg-transparent w-max sm:w-auto mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                    <a href="/index.html">LogOut</a>
+                </button>
             </div>
         </div>
     </div>
@@ -61,22 +56,25 @@
 <!-- CART -->
 <h1 class="p-3 sm:w-max mt-10 mb-10 text-black font-bold bg-gray-200 w-max border-black rounded-2xl">YOUR CART</h1>
 
-    <!-- CARD -->
-    <div class=" flex flex-row border shadow-lg rounded-2xl w-max ">
-       <h1 class="p-5"><a class="border shadow-lg rounded-2xl bg-gray-300 p-2" href="/pages/cart.html">Continue Shopping?</a></h1>
-       </p>
-        <div>
-            <img class="h-40" src="/assets/img/jordan.jpg" alt="Jordan Dior">
-            <div>
-                <span class="m-3 font-bold">Dior X Jordan </span>
-            </div>
-        </div>
-        <div class="ml-5">
-            <img class="h-40" src="/assets/img/ronaldo.jpg" alt="RealMadrid-Jersey">
-            <div>
-                <span class="m-3 font-bold">Cr7 Jersey </span>
-            </div>
-        </div>
-    </div>
+<!-- Dynamic Cart Container -->
+<div id="cartContainer" class="flex flex-row border shadow-lg rounded-2xl w-max p-5 gap-5">
+    <h1 class="p-5"><a class="border shadow-lg rounded-2xl bg-gray-300 p-2" href="/pages/cart.html">Continue Shopping?</a></h1>
+    <!-- Cart items will be rendered here -->
+</div>
+
+<script type="module" src="/assets/js/account.js"></script>
+<script type="module">
+import supabase from '/assets/js/client.js';
+
+document.getElementById('logoutBtn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    let { error } = await supabase.auth.signOut();
+    if (error) {
+        alert('Logout failed: ' + error.message);
+        return;
+    }
+    window.location.href = '/index.html';
+});
+</script>
 </body>
 </html>

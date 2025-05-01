@@ -5,13 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listings</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body class="bg-gray-100">
+    <!-- NAV BAR -->
+    <nav class="mb-5 border rounded-lg border-white shadow-lg sm:w-full md:w-full bg-white">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6 py-2">
+            <!-- Logo -->
+            <img class="h-20 w-20" src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
+            <!-- Nav Links -->
+            <ul class="flex flex-col md:flex-row items-center gap-7">
+                <li class="font-semibold hover:text-blue-500"><a href="/index.html">Home</a></li>
+                <li class="font-semibold hover:text-blue-500"><a href="/pages/cart.html">My Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-4xl">Available Products</h1>
+        <h1 class="text-3xl font-bold mb-8">Available Products</h1>
         
         <!-- Search and Filters -->
-         <nav class="p-3 bg-white font-bold"><a href="/pages/account.html">Home</a></nav>
         <div class="bg-white p-4 rounded-lg shadow-md mb-6">
             <div class="flex flex-col md:flex-row gap-4">
                 <input type="text" placeholder="Search for products..." id="searchInput" 
@@ -20,8 +33,9 @@
                     <option value="">All Categories</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Clothing">Clothing</option>
-                    <option value="Home">Home & Garden</option>
+                    <option value="Home & Garden">Home & Garden</option>
                     <option value="Sports">Sports</option>
+                    <option value="Other">Other</option>
                 </select>
                 <button onclick="loadProducts()" 
                         class="bg-[#626F47] text-white py-2 px-4 rounded hover:bg-[#535f3a]">
@@ -32,121 +46,10 @@
         
         <!-- Product Grid -->
         <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Products will be loaded here -->
+            <!-- Products will be loaded here by JS -->
         </div>
     </div>
-<!-- CART -->
- 
-<h1 class="p-3 m-20 text-center sm:w-max mt-10 mb-10 text-black font-bold bg-gray-200 border-black rounded-2xl">Products</h1>
 
-    <!-- CARD -->
-    <div class=" m-24 h-96 bg-white flex justify-between flex-row shadow-lg rounded-2xl">
-        <div class=" flex flex-col p-10  font-bold">
-            <img class="h-8 w-8" src="/assets/img/store.png" alt="Store-logo">
-            <h1 class="mb-10 font-bold">Avin's Store</h1>
-            <span class="font-semibold text-3 bg-green-200 w-max shadow-lg border rounded-2xl mb-10">In-Stock</span>
-            <span>DIOR X JORDAN</span>
-            <span class="text-3xl">$1,000</span>
-            </div>
-            <!-- Image -->
-            <div>
-            <img class="h-96 w-96 p-2 shadow-md rounded-2xl" src="/assets/img/jordan.jpg" alt="Jordan Dior">
-          
-        </div>
-    </div>
-    
-    <!-- CARD-2 -->
-    
-    <div class="h-96 flex justify-between bg-white m-24 rounded-2xl shadow-lg">
-        <div class=" flex flex-col p-10 font-bold">
-            <img class="h-8 w-8" src="/assets/img/store.png" alt="Store-logo">
-            <h1 class="mb-10">Siuuu7</h1>
-            <span class=" font-semibold text-3 bg-red-200 w-max shadow-lg border rounded-2xl mb-10">Out-Of-Stock</span>
-            <span>CR7 Jersey</span>
-            <span class="text-3xl">$30.99</span>
-        </div>
-            <!-- Image -->
-            <div class="ml-5">
-                <img class="h-96 w-96 p-2 shadow-md rounded-2xl opacity-50 hover:opacity-100" src="/assets/img/ronaldo.jpg" alt="RealMadrid-Jersey">
-            </div>
-    </div>
-
-
-    <script>
-        // Load all products
-        async function loadProducts() {
-            try {
-                const search = document.getElementById('searchInput').value;
-                const category = document.getElementById('categoryFilter').value;
-                
-                let url = 'http://localhost:5000/api/products';
-                const params = new URLSearchParams();
-                if (search) params.append('search', search);
-                if (category) params.append('category', category);
-                
-                if (params.toString()) url += `?${params.toString()}`;
-                
-                const response = await fetch(url);
-                const products = await response.json();
-                renderProducts(products);
-            } catch (error) {
-                console.error('Error loading products:', error);
-            }
-        }
-
-        function renderProducts(products) {
-            const container = document.getElementById('productsGrid');
-            container.innerHTML = products.map(product => `
-                <div class="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow">
-                    <img src="${product.images[0] || '/assets/img/placeholder.jpg'}" 
-                         alt="${product.name}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg">${product.name}</h3>
-                        <p class="text-gray-500 text-sm">Sold by: ${product.seller.name}</p>
-                        <p class="text-gray-600 mt-2 line-clamp-2">${product.description}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="font-bold text-lg">$${product.price.toFixed(2)}</span>
-                            <button onclick="addToCart('${product._id}')" 
-                                    class="bg-[#626F47] text-white py-1 px-4 rounded-full hover:bg-[#535f3a]">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('') || '<p class="col-span-full text-center">No products found.</p>';
-        }
-
-        // Add to cart function
-        async function addToCart(productId) {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = '/pages/login.html';
-                    return;
-                }
-                
-                const response = await fetch('http://localhost:5000/api/cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ productId, quantity: 1 })
-                });
-                
-                if (response.ok) {
-                    alert('Product added to cart!');
-                } else {
-                    const error = await response.json();
-                    alert(error.message || 'Failed to add to cart');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-        // Load products on page load
-        document.addEventListener('DOMContentLoaded', loadProducts);
-    </script>
+    <script type="module" src="/assets/js/listings.js"></script>
 </body>
 </html>

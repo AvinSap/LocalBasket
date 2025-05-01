@@ -19,9 +19,6 @@
         <!-- Nav Links -->
         <ul class="flex flex-col md:flex-row items-center gap-7 ">
           <li class="font-semibold hover:text-blue-500 "><a href="/index.html">Home</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/orders.html">Orders</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/cart.html">My Cart</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/profile.html">My Profile</a></li>
         </ul>
   
         <!-- Right Side (Search + Buttons) -->
@@ -91,38 +88,6 @@
     </section>
 
     <!-- Registration JavaScript -->
-    <script>
-      document.getElementById('registerForm').addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
-          const formData = {
-              name: e.target.name.value,
-              email: e.target.email.value,
-              password: e.target.password.value
-          };
-
-          try {
-              const response = await fetch('http://localhost:5000/api/auth/register', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(formData)
-              });
-
-              const data = await response.json();
-              
-              if (response.ok) {
-                  alert('Registration successful! Please login.');
-                  window.location.href = '/pages/login.html';
-              } else {
-                  alert(data.message || 'Registration failed');
-              }
-          } catch (error) {
-              console.error('Error:', error);
-              alert('An error occurred during registration');
-          }
-      });
-    </script>
+    <script type="module" src="/assets/js/signup.js"></script>
 </body>
 </html>

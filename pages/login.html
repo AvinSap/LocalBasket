@@ -19,9 +19,6 @@
         <!-- Nav Links -->
         <ul class="flex flex-col md:flex-row items-center gap-7 ">
           <li class="font-semibold hover:text-blue-500 "><a href="/index.html">Home</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/orders.html">Orders</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/cart.html">My Cart</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/profile.html">My Profile</a></li>
         </ul>
   
         <!-- Right Side (Search + Buttons) -->
@@ -88,45 +85,6 @@
     </section>
 
     <!-- Login JavaScript -->
-    <script>
-      document.getElementById('loginForm').addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
-          const formData = {
-              email: e.target.email.value,
-              password: e.target.password.value
-          };
-
-          try {
-              const response = await fetch('http://localhost:5000/api/auth/login', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(formData)
-              });
-
-              const data = await response.json();
-              
-              if (response.ok) {
-                  // Store token and user data
-                  localStorage.setItem('token', data.token);
-                  localStorage.setItem('user', JSON.stringify(data.user));
-                  
-                  // Redirect based on user role
-                  if (data.user.role === 'admin') {
-                      window.location.href = '/pages/admin.html';
-                  } else {
-                      window.location.href = '/pages/account.html';
-                  }
-              } else {
-                  alert(data.message || 'Login failed');
-              }
-          } catch (error) {
-              console.error('Error:', error);
-              alert('An error occurred during login');
-          }
-      });
-    </script>
+    <script type="module" src="/assets/js/login.js"></script>
 </body>
 </html>

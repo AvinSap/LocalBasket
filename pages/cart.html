@@ -10,21 +10,14 @@
 
 <body>
     <!-- NAV BAR -->
-<nav class="mb-5 border rounded-lg border-white shadow-lg sm:w-full md:w-full">
-        
+    <nav class="mb-5 border rounded-lg border-white shadow-lg sm:w-full md:w-full">
       <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        
         <!-- Logo -->
         <img class="h-32 w-32" src="/assets/img/logo-transparent.png" alt="LocalBasket-Logo">
-  
         <!-- Nav Links -->
         <ul class="flex flex-col md:flex-row items-center gap-7 ">
-          <li class="font-semibold hover:text-blue-500 "><a href="/index.html">Home</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/orders.html">Orders</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/cart.html">My Cart</a></li>
-          <li class="font-semibold hover:text-blue-500"><a href="/pages/account.html">Account</a></li>
+          <!-- Home button removed -->
         </ul>
-  
         <!-- Right Side Nav -->
         <div class="nav-contents flex flex-col md:flex-row items-center gap-4">
             <!-- Search Bar -->
@@ -37,61 +30,51 @@
             </div>
             <button type="submit" class="absolute right-2.5 bottom-1.5 bg-transparent hover:bg-gray-300 text-black text-sm px-3 py-1 rounded-lg">Search</button>
           </form>
-  
           <!-- Auth Buttons -->
             <div class="flex w-max gap-2">
-                <button class="w-max mb-3 py-2 px-4 bg-transparent font-semibold hover:text-black border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
-                <a href="/pages/shop.html">My Seller Dashboard</a>
+                <button class="bg-transparent w-max sm:w-auto mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                    <a href="/pages/account.html">Home</a>
                 </button>
-                <button class="bg-transparent w-max sm:w-auto mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full"><a href="/index.html">LogOut</a></button>
+                <button class="w-max mb-3 py-2 px-4 bg-transparent font-semibold hover:text-black border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                    <a href="/pages/shop.html">My Seller Dashboard</a>
+                </button>
+                
+                <button id="logoutBtn" class="bg-transparent w-max sm:w-auto mb-3 font-semibold hover:text-black py-2 px-4 border border-black hover:border-transparent hover:bg-gray-200 rounded-full">
+                    <a href="/index.html">LogOut</a>
+                </button>
             </div>
         </div>
     </div>
-</nav>
-        <div class="h-96 w-[50rem] mt-24 mx-auto flex bg-white rounded-2xl shadow-lg  ">
-        <div>
-            <img class="m-3 h-10 w-10" src="/assets/img/cart.png" alt="Basket-logo">
-            <h1 class="font-semibold mb-1 p-10">HAVE YOU MADE YOUR DECISION YET?</h1>
-            <span class="text-3xl font-bold p-10">Total:$1030.99</span>
-            <button class="w-max p-5 m-5 border rounded-2xl bg-gray-200 shadow-lg">Proceed to Checkout</button>
-          <div class="ml-8">
-            <span class="bg-green-200 rounded-2xl"><img class="h-4" src="/assets/img/truck.png" alt="">Delivers  Tommorow</span>
-          </div>
+    </nav>
+    <div id="cartMain" class="h-96 w-[50rem] mt-24 mx-auto flex bg-white rounded-2xl shadow-lg">
+        <div class="flex flex-col justify-between">
+            <div>
+                <img class="m-3 h-10 w-10" src="/assets/img/cart.png" alt="Basket-logo">
+                <h1 class="font-semibold mb-1 p-10">HAVE YOU MADE YOUR DECISION YET?</h1>
+                <span id="cartTotal" class="text-3xl font-bold p-10">Total: $0.00</span>
+                <button id="checkoutBtn" class="w-max p-5 m-5 border rounded-2xl bg-gray-200 shadow-lg">Proceed to Checkout</button>
+                <div class="ml-8">
+                    <span class="bg-green-200 rounded-2xl inline-flex items-center gap-2 p-1">
+                        <img class="h-4" src="/assets/img/truck.png" alt="">Delivers Tomorrow
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="flex sm:w-full">
-            <img class="h-52" src="/assets/img/jordan.jpg" alt="Shoes">
-            <img class="h-52" src="/assets/img/ronaldo.jpg" alt="Jersey">
-        </div>
+        <div id="cart-items" class="flex sm:w-full items-center gap-4 px-4 overflow-x-auto"></div>
     </div>
+    <script type="module" src="/assets/js/cart.js"></script>
+    <script type="module">
+    import supabase from '/assets/js/client.js';
+
+    document.getElementById('logoutBtn')?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        let { error } = await supabase.auth.signOut();
+        if (error) {
+            alert('Logout failed: ' + error.message);
+            return;
+        }
+        window.location.href = '/index.html';
+    });
+    </script>
 </body>
 </html>
-<!-- // Fetch cart items
-async function loadCart() {
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/cart', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        
-        const cart = await response.json();
-        renderCartItems(cart.items);
-        updateTotal(cart.total);
-    } catch (error) {
-        console.error('Error loading cart:', error);
-    }
-}
-
-function renderCartItems(items) {
-    const container = document.getElementById('cart-items');
-    container.innerHTML = items.map(item => `
-        <div class="cart-item flex border-b py-4">
-            <img src="${item.product.images[0]}" class="w-20 h-20 object-cover">
-            <div class="ml-4">
-                <h3 class="font-bold">${item.product.name}</h3>
-                <p>$${item.product.price.toFixed(2)} x ${item.quantity}</p>
-                <button onclick="removeFromCart('${item.product._id}')" 
-                        class="text-red-500 mt-1">Remove</button>
-            </div>
-        </div>
-    `).join('');
-} -->
