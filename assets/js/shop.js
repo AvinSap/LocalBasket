@@ -36,14 +36,14 @@ productForm.addEventListener('submit', async (e) => {
     }
 
     // Handle image upload
-    let image_url = '';
-    
+    let image_url;
     const file = productImagesInput.files[0];
+
     if (file) {
         const filePath = `${user.id}/${Date.now()}-${file.name}`;
         const { error: uploadError } = await supabase
             .storage
-            .from('images') // must match your bucket name
+            .from('images')
             .upload(filePath, file, { upsert: true });
         if (uploadError) {
             alert('Image upload failed: ' + uploadError.message);
@@ -55,8 +55,23 @@ productForm.addEventListener('submit', async (e) => {
             .from('images')
             .getPublicUrl(filePath);
         image_url = publicUrlData.publicUrl;
+    } else if (editId) {
+        // Fetch the existing image_url if editing and no new image is uploaded
+        const { data: existing, error: fetchError } = await supabase
+            .from('listings')
+            .select('image_url')
+            .eq('id', editId)
+            .single();
+        if (fetchError) {
+            alert('Failed to fetch existing product image.');
+            return;
+        }
+        image_url = existing.image_url;
+    } else {
+        image_url = '';
     }
 
+    // Only update editable fields
     const listing = {
         title: productForm.name.value,
         description: productForm.description.value,
@@ -64,8 +79,7 @@ productForm.addEventListener('submit', async (e) => {
         stock: parseInt(productForm.stock.value, 10),
         category: productForm.category.value,
         sku: productForm.sku.value,
-        image_url,
-        user_id: user.id
+        image_url
     };
 
     let result;
@@ -74,20 +88,36 @@ productForm.addEventListener('submit', async (e) => {
             .from('listings')
             .update(listing)
             .eq('id', editId);
+        if (result.error) {
+            alert('Error saving product: ' + result.error.message);
+            console.error(result);
+        } else if (result.data && result.data.length === 0) {
+            alert('No product was updated. Please check the product ID.');
+            console.error(result);
+        } else {
+            alert('Product updated!');
+            productFormContainer.classList.add('hidden');
+            productForm.reset();
+            editId = null;
+            loadProducts();
+        }
     } else {
         result = await supabase
             .from('listings')
-            .insert([listing]);
-    }
-
-    if (result.error) {
-        alert('Error saving product: ' + result.error.message);
-    } else {
-        alert('Product saved!');
-        productFormContainer.classList.add('hidden');
-        productForm.reset();
-        editId = null;
-        loadProducts();
+            .insert([{
+                ...listing,
+                user_id: user.id
+            }]);
+        if (result.error) {
+            alert('Error saving product: ' + result.error.message);
+            console.error(result);
+        } else {
+            alert('Product saved!');
+            productFormContainer.classList.add('hidden');
+            productForm.reset();
+            editId = null;
+            loadProducts();
+        }
     }
 });
 
@@ -132,8 +162,54 @@ async function loadProducts() {
         </tr>
     `).join('');
 
-    // ...edit and delete handlers as before...
+    // Attach edit and delete handlers
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const id = btn.getAttribute('data-id');
+            const product = products.find(p => p.id == id);
+            if (product) {
+                editId = product.id;
+                productForm.name.value = product.title;
+                productForm.description.value = product.description;
+                productForm.price.value = product.price;
+                productForm.stock.value = product.stock;
+                productForm.category.value = product.category;
+                productForm.sku.value = product.sku || '';
+                productFormContainer.classList.remove('hidden');
+            }
+        });
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const id = btn.getAttribute('data-id');
+            if (confirm('Are you sure you want to delete this product?')) {
+                const { error } = await supabase
+                    .from('listings')
+                    .delete()
+                    .eq('id', id);
+                if (error) {
+                    alert('Error deleting product: ' + error.message);
+                } else {
+                    loadProducts();
+                }
+            }
+        });
+    });
 }
 
 // Initialize
 document.addEventListener('DOMContentLoaded', loadProducts);
+
+// Logout handler
+document.getElementById('logoutBtn')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    let { error } = await supabase.auth.signOut();
+    if (error) {
+        alert('Logout failed: ' + error.message);
+        return;
+    }
+    window.location.href = '/index.html';
+});
